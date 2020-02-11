@@ -26,7 +26,7 @@ for i = 1:size(X)
 end
 
 for j = 1:size(theta)
-  grad(j) = 1/m * sum(sigmoid((theta'*X')' - y) .*X (:,j))
+  grad(j) = 1/m * sum(((sigmoid(theta'*X'))' - y) .* X(:,j))
 end
 
 
