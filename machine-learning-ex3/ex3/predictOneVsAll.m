@@ -30,7 +30,8 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
-
+predictions = sigmoid(X*all_theta'); % This makes predictions of each number for each class
+[~, p] = max(predictions, [], 2);
 
 
 
