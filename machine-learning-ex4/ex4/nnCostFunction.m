@@ -59,8 +59,6 @@ endfor
 J = 1/m * sum(sum(-y_new .* log(h_theta) - (1-y_new) .* log(1-h_theta)));
 
 
-
-
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
@@ -76,6 +74,16 @@ J = 1/m * sum(sum(-y_new .* log(h_theta) - (1-y_new) .* log(1-h_theta)));
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
+
+% remove the first column and copy to new matrices
+% this is because we don't want to include the bias term
+t1 = Theta1(:,2:size(Theta1,2));
+t2 = Theta2(:,2:size(Theta2,2));
+
+reg_term = lambda/(2*m) * (sum(sum(t1 .* t1)) + sum(sum(t2 .* t2)));
+
+J = J + reg_term;
+
 %
 % Part 3: Implement regularization with the cost function and gradients.
 %
@@ -84,8 +92,6 @@ J = 1/m * sum(sum(-y_new .* log(h_theta) - (1-y_new) .* log(1-h_theta)));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-
-
 
 
 
