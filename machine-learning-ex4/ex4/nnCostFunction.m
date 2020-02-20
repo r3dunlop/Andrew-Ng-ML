@@ -58,6 +58,14 @@ endfor
 % Can now do vectorized math for cost
 J = 1/m * sum(sum(-y_new .* log(h_theta) - (1-y_new) .* log(1-h_theta)));
 
+% remove the first column and copy to new matrices
+% this is because we don't want to include the bias term
+t1 = Theta1(:,2:size(Theta1,2));
+t2 = Theta2(:,2:size(Theta2,2));
+
+reg_term = lambda/(2*m) * (sum(sum(t1 .* t1)) + sum(sum(t2 .* t2)));
+
+J = J + reg_term;
 
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
@@ -75,14 +83,33 @@ J = 1/m * sum(sum(-y_new .* log(h_theta) - (1-y_new) .* log(1-h_theta)));
 %               over the training examples if you are implementing it for the 
 %               first time.
 
-% remove the first column and copy to new matrices
-% this is because we don't want to include the bias term
-t1 = Theta1(:,2:size(Theta1,2));
-t2 = Theta2(:,2:size(Theta2,2));
+for t = 1:m
+  % Step 1 (feed forward pass of t'th rlrmrny)
+  	a1 = X(t,:); 
+    a1 = a1'; % (401x1)
+	  z2 = Theta1 * a1; % (25x401)*(401x1) = 25x1
+	  a2 = sigmoid(z2); % (25x1)
+    
+    a2 = [1 ; a2]; % adding a bias element (26x1)
+	  z3 = Theta2 * a2; % (10x26)*(26x1) = 10x26
+	  a3 = sigmoid(z3); % (10x1)
+   
+   % Step 2 (Calulate deltas in output layer)
+    delta_3 = a3 - y_new(:,t);
+   
+   % Step 3 (calculate deltas in 2nd layer)
+    delta_2 = Theta2' * delta_3 .* sigmoidGradient([1; z2]);
+    
+   % Step 4 (Accumulate the gradient, dropping delta_0s)
+    delta_2 = delta_2(2:end);
+    Theta2_grad = Theta2_grad + delta_3 * a2';
+    Theta1_grad = Theta1_grad + delta_2 * a1';
+     
+endfor
 
-reg_term = lambda/(2*m) * (sum(sum(t1 .* t1)) + sum(sum(t2 .* t2)));
-
-J = J + reg_term;
+  % Step 5 (divide by m to get unregularized cost function gradient)
+    Theta2_grad = (1/m) * Theta2_grad; 
+    Theta1_grad = (1/m) * Theta1_grad; 
 
 %
 % Part 3: Implement regularization with the cost function and gradients.
