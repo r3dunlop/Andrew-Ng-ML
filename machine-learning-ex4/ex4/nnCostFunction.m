@@ -38,6 +38,29 @@ Theta2_grad = zeros(size(Theta2));
 %         variable J. After implementing Part 1, you can verify that your
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
+
+% Perform forward prop
+X = [ones(m,1) X]; % this attaches bias to parameters
+z2 = Theta1 * X'; % 
+a2 = sigmoid(z2); %25x5000
+
+%Prop the result to the next layer
+a2 = [ones(m,1) a2'];
+z3 = Theta2 * a2';
+h_theta = sigmoid(z3); %10*5000
+
+% recode y's to be vectors
+y_new = zeros(num_labels,m);
+for i=1:m
+  y_new(y(i),i) = 1;
+endfor
+
+% Can now do vectorized math for cost
+J = 1/m * sum(sum(-y_new .* log(h_theta) - (1-y_new) .* log(1-h_theta)));
+
+
+
+
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
