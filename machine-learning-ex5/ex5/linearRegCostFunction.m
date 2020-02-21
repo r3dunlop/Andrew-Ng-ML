@@ -18,7 +18,8 @@ grad = zeros(size(theta));
 %
 %               You should set J to the cost and grad to the gradient.
 %
-
+%X = [ones(length(X),1), X]; % X already has bias term?
+J = 1/(2*m)* sum((X * theta - y) .^2) + lambda/(2*m) * theta(2:end)' * theta(2:end);
 
 
 
