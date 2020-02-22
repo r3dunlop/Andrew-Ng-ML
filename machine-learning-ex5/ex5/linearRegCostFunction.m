@@ -21,8 +21,8 @@ grad = zeros(size(theta));
 %X = [ones(length(X),1), X]; % X already has bias term?
 J = 1/(2*m)* sum((X * theta - y) .^2) + lambda/(2*m) * theta(2:end)' * theta(2:end);
 
-theta_zero = theta
-theta_zero(1) = 0
+theta_zero = theta;
+theta_zero(1) = 0;
 
 grad = 1/m * (X * theta - y)' * X + lambda/m * theta_zero';
 
