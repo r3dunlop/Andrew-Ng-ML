@@ -21,6 +21,16 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+for i = 1:size(X,1) # Each row is a seperate example
+  distance_sq = zeros(1,K);
+  for j = 1:K
+    #sum of squares is measure of distance, don't need to sqrt
+    distance_sq(1,j) = sum(power((X(i,:)-centroids(j,:)),2)); 
+  endfor
+  #find the minimum distance, and then store the index of that vector
+  [~, distance_idx] = min(distance_sq);
+  idx(i,1) = distance_idx;
+endfor
 
 
 
