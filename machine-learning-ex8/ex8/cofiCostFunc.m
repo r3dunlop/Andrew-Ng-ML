@@ -45,6 +45,9 @@ J = 1/2 * sum(sum(R .* ( X * Theta' - Y ) .^ 2));
 X_grad = (R .*(X * Theta' - Y)) * Theta;
 Theta_grad = (R .*(X * Theta' - Y))' * X;
 
+% Adding regularization
+J = J + lambda/2 * (sum(sum(Theta .^ 2)) + sum(sum(X .^ 2)));
+
 
 
 
